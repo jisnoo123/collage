@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
 
+from procedure import manipulation
+
 train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True)
 test_dataset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True)
 

@@ -1,6 +1,7 @@
 import cv2
 from tqdm import tqdm
 
+
 def resize_img(img, ht, wd):
     '''Resizes an image into (ht*wd)'''
     resized_img = cv2.resize(img, (ht,wd))
@@ -45,7 +46,7 @@ def linear_search(mean_big_patch, avg_px):
 
 def core(big_img, m, n):
     '''
-    This function does the whole job, hence the name core. It returns the new collaged image.
+    This function does the whole job, hence the name : core. It returns the new collaged image.
 
     It extracts patches from the big image having grids mxn, finds the 
     min img from the dataset and replaces the patches.
