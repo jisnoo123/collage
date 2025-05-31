@@ -27,8 +27,8 @@ argparser = parser.parse_args()
 dataset_choice = argparser.d
 ip = argparser.ip
 # op = argparser.op
-m = argparser.m 
-n = argparser.n 
+m = int(argparser.m)
+n = int(argparser.n)
 
 '''Loading the datasets'''
 
@@ -69,7 +69,7 @@ img = cv2.cvtColor(img_big, cv2.COLOR_BGR2RGB)
 print('Performing core execution')
 
 blr_big_img = blur(img, 151) #Applying a kernel size of 151
-final_img = core(blr_big_img, m, n, dataset)
+final_img = core(blr_big_img, m, n, dataset, rb_av)
 
 print('Core execution completed')
 '''Show the final image'''

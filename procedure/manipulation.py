@@ -44,7 +44,7 @@ def linear_search(mean_big_patch, avg_px):
     return min_ind          # Return the index of the min image
 
 
-def core(big_img, m, n, fds):
+def core(big_img, m, n, fds, rb_av):
     '''
     This function does the whole job, hence the name : core. It returns the new collaged image.
 
@@ -63,17 +63,17 @@ def core(big_img, m, n, fds):
             x_end = int(j*big_img_cpy.shape[1]/n)
 
             cropped_img = big_img_cpy[y_start:y_end, x_start:x_end]
-            blurred_img = blur(cropped_img)
+            blurred_img = blur(cropped_img, 3)
             mean_big_img = mean(blurred_img)
 
-            dataset_img_ind = linear_search(mean_big_img)   #Dataset index of img to be replaced
+            dataset_img_ind = linear_search(mean_big_img, rb_av)   #Dataset index of img to be replaced
 
             dataset_img = fds[dataset_img_ind]   #The actual dataset img to be placed in place of patch
             #Resize the dataset img
             dataset_img = cv2.resize(dataset_img, (int(big_img_cpy.shape[1]/n),int(big_img_cpy.shape[0]/m)))
             
             #Replace the patch with the dataset img retrieved
-            big_img_cpy[y_start:y_start+int(big_img_cpy.shape[0]/m), x_start:x_start+int(big_img_cpy.shape[1]/n)] = cifar_img
+            big_img_cpy[y_start:y_start+int(big_img_cpy.shape[0]/m), x_start:x_start+int(big_img_cpy.shape[1]/n)] = dataset_img
             x_start = x_end
         y_start = y_end
 
