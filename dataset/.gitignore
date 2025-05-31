@@ -1,3 +1,7 @@
 cifar10 
 mnist 
 svhn 
+mnist_rgb
+cifar10_rb_av
+mnist_rb_av
+svhn_rb_av

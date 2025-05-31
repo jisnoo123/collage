@@ -17,7 +17,7 @@ def mean(img):
     sum = 0
     m = img.shape[0]
     n = img.shape[1]
-
+    
     for i in range(m):
         for j in range(n):
             sum += int(img[i][j][0]) + int(img[i][j][1]) + int(img[i][j][2])
@@ -44,7 +44,7 @@ def linear_search(mean_big_patch, avg_px):
     return min_ind          # Return the index of the min image
 
 
-def core(big_img, m, n):
+def core(big_img, m, n, fds):
     '''
     This function does the whole job, hence the name : core. It returns the new collaged image.
 
@@ -66,8 +66,9 @@ def core(big_img, m, n):
             blurred_img = blur(cropped_img)
             mean_big_img = mean(blurred_img)
 
-            dataset_img = linear_search(mean_big_img) #The actual dataset 10 img to be placed in place of patch
+            dataset_img_ind = linear_search(mean_big_img)   #Dataset index of img to be replaced
 
+            dataset_img = fds[dataset_img_ind]   #The actual dataset img to be placed in place of patch
             #Resize the dataset img
             dataset_img = cv2.resize(dataset_img, (int(big_img_cpy.shape[1]/n),int(big_img_cpy.shape[0]/m)))
             
@@ -77,3 +78,4 @@ def core(big_img, m, n):
         y_start = y_end
 
     return big_img_cpy
+
