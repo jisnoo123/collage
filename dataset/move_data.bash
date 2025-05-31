@@ -1,1 +1,1 @@
-mv cifar10 mnist svhn ../collage_image
+cp  cifar10 mnist svhn ../collage_image
