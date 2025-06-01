@@ -8,7 +8,7 @@ import numpy as np
 from tqdm import tqdm
 import argparse
 import pickle
-
+import ffmpeg
 import sys
 sys.path.insert(0, '../')
 from procedure import *
@@ -60,12 +60,18 @@ if not cap.isOpened():
 else:
     print("Video file opened successfully!")
 
-cap = cv2.VideoCapture(ip)
+
+# Extract sound of the video 
+
+# Load the video file
+vid_input_file = ffmpeg.input(ip)
+
+# Extract the audio and save it as an MP3 file
+sound_path = '../ip/sounds/sound.mp3'
+vid_input_file.output(sound_path, acodec='mp3').run()
+
 
 ret, frame = cap.read() # Read the first frame
-
-print('Shape of frame', frame.shape)
-height, width = frame.shape[0], frame.shape[1]
 
 '''Extracting the frames and keeping them in a list'''
 
