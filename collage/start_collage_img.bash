@@ -1,8 +1,8 @@
 # Input image path
-ip="../ip/sample_img.jpg"
+ip="../ip/images/sample_img.jpg"
 
 # Output image path along with the name of the image to be saved as.
-op="../op/collaged_img.jpg"
+op="../op/images/collaged_img.jpg"
 
 # m x n grids
 m=30
