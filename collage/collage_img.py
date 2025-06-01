@@ -8,6 +8,7 @@ import numpy as np
 from tqdm import tqdm
 import argparse
 import pickle
+from PIL import Image
 
 import sys
 sys.path.insert(0, '../')
@@ -75,5 +76,5 @@ plt.show()
 
 
 '''Save it in the output path'''
-
-cv2.imwrite(op, final_img)
+pil_image = Image.fromarray(final_img)
+pil_image.save(op)
