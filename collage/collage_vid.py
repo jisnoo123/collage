@@ -73,6 +73,8 @@ vid_input_file.output(sound_path, acodec='mp3').run()
 
 ret, frame = cap.read() # Read the first frame
 
+height, width = frame.shape[0], frame.shape[1]
+
 '''Extracting the frames and keeping them in a list'''
 
 vid_frames = list()
@@ -106,7 +108,7 @@ video = cv2.VideoWriter(op, fourcc, fps, (width, height))
 
 # Creating a folder to dump the converted images
 
-FOLDER_NAME = "checkpoint"
+FOLDER_NAME = "../op/videos/checkpoint"
 
 try:
     os.makedirs(FOLDER_NAME)
@@ -134,3 +136,11 @@ for i in range(len(vid_frames)):
 # Release the video writer and close the video file
 video.release()
 cv2.destroyAllWindows()
+
+# Merge the video and the sound
+
+input_video = ffmpeg.input(op)
+
+input_audio = ffmpeg.input(sound_path)
+
+ffmpeg.concat(input_video, input_audio, v=1, a=1).output(op).run()
