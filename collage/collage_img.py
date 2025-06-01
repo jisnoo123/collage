@@ -40,13 +40,6 @@ if dataset_choice == 'c':
     # Load the cifar10 dataset by unpickling the pickled data
     with open('../dataset/rb_av/cifar10_rb_av', 'rb') as f:
         rb_av = pickle.load(f)
-elif dataset_choice == 'm':
-    # Load the MNIST dataset
-    with open('mnist', 'rb') as f:
-        dataset = pickle.load(f)
-    # Load the mnist dataset by unpickling the pickled data
-    with open('mnist_rb_av', 'rb') as f:
-        rb_av = pickle.load(f)
 elif dataset_choice == 's':
     # Load the SVHN dataset
     with open('../dataset/actual/svhn', 'rb') as f:
@@ -60,8 +53,8 @@ elif dataset_choice == 's':
 '''Loading the big image'''
 
 img_big = cv2.imread(ip, cv2.IMREAD_UNCHANGED)
-plt.imshow(img_big)
-plt.show()
+# plt.imshow(img_big)
+# plt.show()
 img = cv2.cvtColor(img_big, cv2.COLOR_BGR2RGB)
 
 

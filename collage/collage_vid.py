@@ -35,24 +35,17 @@ n = int(argparser.n)
 
 if dataset_choice == 'c':
     # Load the CIFAR10 dataset
-    with open('cifar10', 'rb') as f:
+    with open('../dataset/actual/cifar10', 'rb') as f:
         dataset = pickle.load(f)
     # Load the cifar10 dataset by unpickling the pickled data
-    with open('cifar10_rb_av', 'rb') as f:
-        rb_av = pickle.load(f)
-elif dataset_choice == 'm':
-    # Load the MNIST dataset
-    with open('cifar10', 'rb') as f:
-        dataset = pickle.load(f)
-    # Load the mnist dataset by unpickling the pickled data
-    with open('mnist_rb_av', 'rb') as f:
+    with open('../dataset/rb_av/cifar10_rb_av', 'rb') as f:
         rb_av = pickle.load(f)
 elif dataset_choice == 's':
     # Load the SVHN dataset
-    with open('svhn_rb', 'rb') as f:
+    with open('../dataset/actual/svhn', 'rb') as f:
         dataset = pickle.load(f)
     # Load the svhn dataset by unpickling the pickled data
-    with open('svhn_rb_av', 'rb') as f:
+    with open('../dataset/rb_av/svhn_rb_av', 'rb') as f:
         rb_av = pickle.load(f)
 
 
