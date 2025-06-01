@@ -15,7 +15,8 @@ from procedure import *
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--ip", help="Enter the big image input path", required=True)
+parser.add_argument("--ip", help="Enter the video input path", required=True)
+parser.add_argument("--op", help="Enter the collaged video output path", required=True)
 parser.add_argument("--m", help="Enter the m of grid", required=True)
 parser.add_argument("--n", help="Enter the n of grid", required=True)
 parser.add_argument("--d", help="Enter c for cifar10, m for mist and s for svhn", 
@@ -26,7 +27,7 @@ argparser = parser.parse_args()
 
 dataset_choice = argparser.d
 ip = argparser.ip
-# op = argparser.op
+op = argparser.op
 m = int(argparser.m)
 n = int(argparser.n)
 
@@ -63,6 +64,7 @@ cap = cv2.VideoCapture(ip)
 
 ret, frame = cap.read() # Read the first frame
 
+print('Shape of frame', frame.shape)
 height, width = frame.shape[0], frame.shape[1]
 
 '''Extracting the frames and keeping them in a list'''
@@ -77,11 +79,23 @@ while ret:
 
 '''Converting frames to dataset patches'''
 
-fps = 34
-output_file = '../op/output_changed.mp4'
+# Find fps of the video
+video_fps = cv2.VideoCapture(ip)
+ 
+# Find OpenCV version
+(major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
+
+if int(major_ver)  < 3 :
+    fps = video_fps.get(cv2.cv.CV_CAP_PROP_FPS)
+else :
+    fps = video_fps.get(cv2.CAP_PROP_FPS)
+
+video_fps.release()
+
+
 # Create a VideoWriter object to save the video
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Specify the codec for the output video file
-video = cv2.VideoWriter(output_file, fourcc, fps, (width, height))
+video = cv2.VideoWriter(op, fourcc, fps, (width, height))
 
 
 # Creating a folder to dump the converted images
