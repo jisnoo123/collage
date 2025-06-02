@@ -12,6 +12,7 @@ import ffmpeg
 import sys
 sys.path.insert(0, '../')
 from procedure import *
+import shutil
 
 parser = argparse.ArgumentParser()
 
@@ -68,9 +69,17 @@ print('Your video is under process. This may take some time.')
 # Load the video file
 vid_input_file = ffmpeg.input(ip)
 
+FOLDER_SOUND = "../ip/sounds"
+
+try:
+    os.makedirs(FOLDER_SOUND)
+except:
+    pass
+
 # Extract the audio and save it as an MP3 file
 sound_path = '../ip/sounds/sound.mp3'
-vid_input_file.output(sound_path, acodec='mp3').run(overwrite_output=True, quiet=True)
+
+vid_input_file.output(sound_path, acodec='mp3').run(overwrite_output = True, quiet = True)
 
 
 ret, frame = cap.read() # Read the first frame
@@ -146,12 +155,20 @@ for i in range(len(vid_frames)):
 video.release()
 cv2.destroyAllWindows()
 
+
+# Remove the checkpoint folder
+
+shutil.rmtree(FOLDER_NAME)
+
 # Merge the video and the sound
 
 input_video = ffmpeg.input(no_sound_patched_vid_path)
 
 input_audio = ffmpeg.input(sound_path)
 
-ffmpeg.concat(input_video, input_audio, v=1, a=1).output(op, loglevel = 'quiet').run(overwrite_output=True, quiet=True)
+ffmpeg.concat(input_video, input_audio, v=1, a=1).output(op).run(overwrite_output = True, quiet = True)
+
+shutil.rmtree(FOLDER_NAME_no_sound)
+shutil.rmtree(FOLDER_SOUND)
 
 print('Your collaged video is ready.')
