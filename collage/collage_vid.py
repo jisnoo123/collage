@@ -57,9 +57,11 @@ cap = cv2.VideoCapture(ip)
 # Check if the video was opened successfully
 if not cap.isOpened():
     print("Could not open video file.")
+    sys.exit()
 else:
     print("Video file opened successfully!")
 
+print('Your video is under process. This may take some time.')
 
 # Extract sound of the video 
 
@@ -68,7 +70,7 @@ vid_input_file = ffmpeg.input(ip)
 
 # Extract the audio and save it as an MP3 file
 sound_path = '../ip/sounds/sound.mp3'
-vid_input_file.output(sound_path, acodec='mp3').run()
+vid_input_file.output(sound_path, acodec='mp3').run(overwrite_output=True, quiet=True)
 
 
 ret, frame = cap.read() # Read the first frame
@@ -93,9 +95,9 @@ video_fps = cv2.VideoCapture(ip)
 # Find OpenCV version
 (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
 
-if int(major_ver)  < 3 :
+if int(major_ver)  < 3:
     fps = video_fps.get(cv2.cv.CV_CAP_PROP_FPS)
-else :
+else:
     fps = video_fps.get(cv2.CAP_PROP_FPS)
 
 video_fps.release()
@@ -110,12 +112,12 @@ try:
 except:
     pass
 
-for i in range(len(vid_frames)):
+for i in tqdm(range(len(vid_frames))):
     frame = vid_frames[i]
 
     blur_frame = blur(frame, 151) #Applying a kernel size of 151
 
-    final_frame = core(blur_frame, m, n, dataset, rb_av)
+    final_frame = core_vid(blur_frame, m, n, dataset, rb_av)
 
     cv2.imwrite(FOLDER_NAME + '/' + str(i) + '_frame.png', final_frame)
 
@@ -150,4 +152,6 @@ input_video = ffmpeg.input(no_sound_patched_vid_path)
 
 input_audio = ffmpeg.input(sound_path)
 
-ffmpeg.concat(input_video, input_audio, v=1, a=1).output(op).run()
+ffmpeg.concat(input_video, input_audio, v=1, a=1).output(op, loglevel = 'quiet').run(overwrite_output=True, quiet=True)
+
+print('Your collaged video is ready.')

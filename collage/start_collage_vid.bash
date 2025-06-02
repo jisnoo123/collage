@@ -5,7 +5,7 @@ ip="../ip/videos/actual/bleach_cropped_2s.mp4"
 op="../op/videos/collaged_vid.mp4"
 
 # Convert the video to suitable format for processing
-ffmpeg -i $ip -c:v libx264 -c:a aac "../ip/videos/converted/converted_video.mp4"
+ffmpeg -y -loglevel quiet -i $ip -c:v libx264 -c:a aac "../ip/videos/converted/converted_video.mp4"
 
 
 # Change ip to converted format video
