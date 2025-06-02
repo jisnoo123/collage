@@ -101,11 +101,6 @@ else :
 video_fps.release()
 
 
-# Create a VideoWriter object to save the video
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Specify the codec for the output video file
-video = cv2.VideoWriter(op, fourcc, fps, (width, height))
-
-
 # Creating a folder to dump the converted images
 
 FOLDER_NAME = "../op/videos/checkpoint"
@@ -114,8 +109,6 @@ try:
     os.makedirs(FOLDER_NAME)
 except:
     pass
-
-
 
 for i in range(len(vid_frames)):
     frame = vid_frames[i]
@@ -129,9 +122,23 @@ for i in range(len(vid_frames)):
 
 # Merging the dumped frames to a video
 
+# Create a VideoWriter object to save the video
+
+FOLDER_NAME_no_sound = "../op/no_sound_patched_video"
+
+try:
+    os.makedirs(FOLDER_NAME_no_sound)
+except:
+    pass
+
+no_sound_patched_vid_path = '../op/no_sound_patched_video/no_sound_vid.mp4'
+
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Specify the codec for the output video file
+video = cv2.VideoWriter(no_sound_patched_vid_path, fourcc, fps, (width, height))
+
 for i in range(len(vid_frames)):
-    loaded_frame = cv2.imread('./'+ FOLDER_NAME + '/' + str(i) + '_frame.png')
-    video.write(frame)
+    loaded_frame = cv2.imread(FOLDER_NAME + '/' + str(i) + '_frame.png')
+    video.write(loaded_frame)
 
 # Release the video writer and close the video file
 video.release()
@@ -139,7 +146,7 @@ cv2.destroyAllWindows()
 
 # Merge the video and the sound
 
-input_video = ffmpeg.input(op)
+input_video = ffmpeg.input(no_sound_patched_vid_path)
 
 input_audio = ffmpeg.input(sound_path)
 

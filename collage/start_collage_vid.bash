@@ -1,5 +1,5 @@
 # Input image path
-ip="../ip/videos/actual/bleach_cropped_4s.mp4"
+ip="../ip/videos/actual/bleach_cropped_2s.mp4"
 
 # Output image path along with the name of the image to be saved as.
 op="../op/videos/collaged_vid.mp4"
