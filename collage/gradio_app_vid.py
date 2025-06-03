@@ -15,28 +15,11 @@ from procedure import *
 import shutil
 import gradio as gr
 
-# parser = argparse.ArgumentParser()
-
-# parser.add_argument("--ip", help="Enter the video input path", required=True)
-# parser.add_argument("--op", help="Enter the collaged video output path", required=True)
-# parser.add_argument("--m", help="Enter the m of grid", required=True)
-# parser.add_argument("--n", help="Enter the n of grid", required=True)
-# parser.add_argument("--d", help="Enter c for cifar10, m for mist and s for svhn", 
-#                                                                     required=True)
-
-
-# argparser = parser.parse_args()
-
-# dataset_choice = argparser.d
-# ip = argparser.ip
-# op = argparser.op
-# m = int(argparser.m)
-# n = int(argparser.n)
-
-def collage_video(ip, d, m, n, op):
+def collage_video(ip, d, m, n, coll_vid_file_name):
     m = int(m)
     n = int(m)
 
+    op = '../op/videos' + '/' + coll_vid_file_name + '.mp4'
 
     '''Loading the datasets'''
 
@@ -190,13 +173,12 @@ with gr.Blocks() as demo:
             with gr.Row():
                 m = gr.Textbox(label = 'm')
                 n = gr.Textbox(label = 'n')
-            op = gr.Textbox(label = 'Output Path')
-
+            coll_vid_file_name = gr.Textbox(label = 'Enter collaged video filename')
     generate_btn = gr.Button('Generate')
 
     output = gr.Video(label='Collaged video', height=400, width=600)
 
-    generate_btn.click(fn = collage_video, inputs = [ip, d, m, n, op], outputs = output)
+    generate_btn.click(fn = collage_video, inputs = [ip, d, m, n, coll_vid_file_name], outputs = output)
 
 OUTPUT_FOLDER =  os.path.abspath('../op/videos')
 demo.launch(allowed_paths=[OUTPUT_FOLDER])
