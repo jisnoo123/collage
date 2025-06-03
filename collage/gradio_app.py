@@ -33,10 +33,11 @@ from procedure import *
 # m = int(argparser.m)
 # n = int(argparser.n)
 
-def fn_img(ip, d, m, n, op):
+def collage_image(ip, d, m, n, op):
     '''Loading the datasets'''
-    m =int(m)
-    n= int(n)
+
+    m = int(m) # Convert to int as gradio takes in string
+    n = int(n) # Convert to int as gradio takes in string
 
     if d == 'CIFAR_10':
         # Load the CIFAR10 dataset
@@ -87,18 +88,19 @@ def fn_img(ip, d, m, n, op):
 
 
 with gr.Blocks() as demo:
-    ip = gr.Image(label = 'input image', width = 300, type = 'filepath')
-    with gr.Row():
-        with gr.Column(scale = 2):
+    with gr.Row(equal_height = True):
+        ip = gr.Image(label = 'input image', type = 'filepath', height=400, width = 300)
+        with gr.Column():
             d = gr.Radio(['CIFAR_10', 'SVHN'], label="Dataset")
-        with gr.Column(scale = 1):
-            m = gr.Textbox(label = 'm')
-            n = gr.Textbox(label = 'n')
-    
-    op = gr.Textbox(label = 'output Path')
-    generate_btn = gr.Button('Generate')
-    output = gr.Image(label='Collaged image', width=300)
+            with gr.Row():
+                m = gr.Textbox(label = 'm')
+                n = gr.Textbox(label = 'n')
+            op = gr.Textbox(label = 'Output Path')
 
-    generate_btn.click(fn=fn_img, inputs=[ip, d, m, n, op], outputs=output)
+    generate_btn = gr.Button('Generate')
+
+    output = gr.Image(label='Collaged image', height=400, width=400)
+
+    generate_btn.click(fn = collage_image, inputs = [ip, d, m, n, op], outputs = output)
 
 demo.launch()
