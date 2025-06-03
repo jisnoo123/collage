@@ -37,15 +37,15 @@ def fn_img(ip, d, m, n, op):
     '''Loading the datasets'''
     m =int(m)
     n= int(n)
-    
-    if d == 'c':
+
+    if d == 'CIFAR_10':
         # Load the CIFAR10 dataset
         with open('../dataset/actual/cifar10', 'rb') as f:
             dataset = pickle.load(f)
         # Load the cifar10 dataset by unpickling the pickled data
         with open('../dataset/rb_av/cifar10_rb_av', 'rb') as f:
             rb_av = pickle.load(f)
-    elif d == 's':
+    elif d == 'SVHN':
         # Load the SVHN dataset
         with open('../dataset/actual/svhn', 'rb') as f:
             dataset = pickle.load(f)
@@ -85,9 +85,20 @@ def fn_img(ip, d, m, n, op):
 
     return final_img
 
-demo = gr.Interface(
-    fn=fn_img,
-    inputs=[gr.Image(type='filepath'), "text", "text", "text", "text"],
-    outputs=["image"],
-)
+
+with gr.Blocks() as demo:
+    ip = gr.Image(label = 'input image', width = 300, type = 'filepath')
+    with gr.Row():
+        with gr.Column(scale = 2):
+            d = gr.Radio(['CIFAR_10', 'SVHN'], label="Dataset")
+        with gr.Column(scale = 1):
+            m = gr.Textbox(label = 'm')
+            n = gr.Textbox(label = 'n')
+    
+    op = gr.Textbox(label = 'output Path')
+    generate_btn = gr.Button('Generate')
+    output = gr.Image(label='Collaged image', width=300)
+
+    generate_btn.click(fn=fn_img, inputs=[ip, d, m, n, op], outputs=output)
+
 demo.launch()
