@@ -127,9 +127,8 @@ with gr.Blocks() as demo:
         ip = gr.Image(label = 'input image', type = 'filepath', height=400, width = 300)
         with gr.Column():
             d = gr.Radio(['Anime', 'CIFAR_10', 'SVHN', 'ImageNet10'], label="Dataset")
-            with gr.Row():
-                m = gr.Textbox(label = 'm')
-                n = gr.Textbox(label = 'n')
+            m = gr.Textbox(label = 'm')
+            n = gr.Textbox(label = 'n')
             coll_img_file_name = gr.Textbox(label = 'Collaged image filename [To be saved in collage/dataset/op/images]')
 
     generate_btn = gr.Button('Generate')

@@ -203,10 +203,9 @@ with gr.Blocks() as demo:
         ip = gr.Video(label = 'input video',  height=400, width = 300)
         with gr.Column():
             d = gr.Radio(['Anime', 'ImageNet10', 'CIFAR_10', 'SVHN'], label="Dataset")
-            with gr.Row():
-                m = gr.Textbox(label = 'm')
-                n = gr.Textbox(label = 'n')
-            coll_vid_file_name = gr.Textbox(label = 'Enter collaged video filename')
+            m = gr.Textbox(label = 'm')
+            n = gr.Textbox(label = 'n')
+            coll_vid_file_name = gr.Textbox(label = 'Enter collaged video filename [To be saved in ../op/videos]')
     generate_btn = gr.Button('Generate')
 
     output = gr.Video(label='Collaged video', height=400, width=600)
