@@ -53,7 +53,13 @@ def collage_image(ip, d, m, n, op):
         # Load the svhn dataset by unpickling the pickled data
         with open('../dataset/rb_av/svhn_rb_av', 'rb') as f:
             rb_av = pickle.load(f)
-
+    elif d == 'ImageNet10':
+        # Load the ImageNet10 dataset
+        with open('../dataset/actual/imnet10', 'rb') as f:
+            dataset = pickle.load(f)
+        # Load the ImageNet10 dataset by unpickling the pickled data
+        with open('../dataset/rb_av/imnet10_rb_av', 'rb') as f:
+            rb_av = pickle.load(f)
 
 
     '''Loading the big image'''
@@ -91,7 +97,7 @@ with gr.Blocks() as demo:
     with gr.Row(equal_height = True):
         ip = gr.Image(label = 'input image', type = 'filepath', height=400, width = 300)
         with gr.Column():
-            d = gr.Radio(['CIFAR_10', 'SVHN'], label="Dataset")
+            d = gr.Radio(['CIFAR_10', 'SVHN', 'ImageNet10'], label="Dataset")
             with gr.Row():
                 m = gr.Textbox(label = 'm')
                 n = gr.Textbox(label = 'n')
