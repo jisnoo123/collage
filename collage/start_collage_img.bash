@@ -9,7 +9,7 @@ m=30
 n=30
 
 # Dataset choice
-# c for CIFAR10 and s for SVHN
+# a for anime, c for CIFAR10, i for ImageNet10 and  s for SVHN
 d='c'
 
 

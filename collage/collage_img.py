@@ -48,7 +48,20 @@ elif dataset_choice == 's':
     # Load the svhn dataset by unpickling the pickled data
     with open('../dataset/rb_av/svhn_rb_av', 'rb') as f:
         rb_av = pickle.load(f)
-
+elif dataset_choice == 'i':
+    # Load the ImageNet10 dataset
+    with open('../dataset/actual/imnet10', 'rb') as f:
+        dataset = pickle.load(f)
+    # Load the ImageNet10 dataset by unpickling the pickled data
+    with open('../dataset/rb_av/imnet10_rb_av', 'rb') as f:
+        rb_av = pickle.load(f)
+elif dataset_choice == 'a':
+    # Load the Anime dataset
+    with open('../dataset/actual/anime', 'rb') as f:
+        dataset = pickle.load(f)
+    # Load the Anime dataset by unpickling the pickled data
+    with open('../dataset/rb_av/anime_rb_av', 'rb') as f:
+        rb_av = pickle.load(f)
 
 
 '''Loading the big image'''
