@@ -36,8 +36,13 @@ from procedure import *
 # Global variable to track if image has been generated
 image_generated = False
 
-def collage_image(ip, d, m, n, op):
+def collage_image(ip, d, m, n, coll_img_file_name):
+    
     global image_generated
+
+    # Output path
+
+    op = '../op/images/' + coll_img_file_name + '.png'
     '''Loading the datasets'''
 
     m = int(m) # Convert to int as gradio takes in string
@@ -71,6 +76,8 @@ def collage_image(ip, d, m, n, op):
         # Load the Anime dataset by unpickling the pickled data
         with open('../dataset/rb_av/anime_rb_av', 'rb') as f:
             rb_av = pickle.load(f)
+
+
     '''Loading the big image'''
 
     img_big = cv2.imread(ip, cv2.IMREAD_UNCHANGED)
@@ -123,13 +130,13 @@ with gr.Blocks() as demo:
             with gr.Row():
                 m = gr.Textbox(label = 'm')
                 n = gr.Textbox(label = 'n')
-            op = gr.Textbox(label = 'Output Path')
+            coll_img_file_name = gr.Textbox(label = 'Collaged image filename [To be saved in collage/dataset/op/images]')
 
     generate_btn = gr.Button('Generate')
 
     output = gr.Image(label='Collaged image', height=400, width=400)
 
-    generate_btn.click(fn = collage_image, inputs = [ip, d, m, n, op], outputs = output)
+    generate_btn.click(fn = collage_image, inputs = [ip, d, m, n, coll_img_file_name], outputs = output)
 
     
 demo.launch()

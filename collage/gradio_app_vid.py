@@ -37,7 +37,20 @@ def collage_video(ip, d, m, n, coll_vid_file_name):
         # Load the svhn dataset by unpickling the pickled data
         with open('../dataset/rb_av/svhn_rb_av', 'rb') as f:
             rb_av = pickle.load(f)
-
+    elif d == 'ImageNet10':
+        # Load the ImageNet10 dataset
+        with open('../dataset/actual/imnet10', 'rb') as f:
+            dataset = pickle.load(f)
+        # Load the ImageNet10 dataset by unpickling the pickled data
+        with open('../dataset/rb_av/imnet10_rb_av', 'rb') as f:
+            rb_av = pickle.load(f)
+    elif d == 'Anime':
+        # Load the Anime dataset
+        with open('../dataset/actual/anime', 'rb') as f:
+            dataset = pickle.load(f)
+        # Load the Anime dataset by unpickling the pickled data
+        with open('../dataset/rb_av/anime_rb_av', 'rb') as f:
+            rb_av = pickle.load(f)
 
     ''' Loading the input video '''
 
@@ -169,7 +182,7 @@ with gr.Blocks() as demo:
     with gr.Row(equal_height = True):
         ip = gr.Video(label = 'input video',  height=400, width = 300)
         with gr.Column():
-            d = gr.Radio(['CIFAR_10', 'SVHN'], label="Dataset")
+            d = gr.Radio(['Anime', 'ImageNet10', 'CIFAR_10', 'SVHN'], label="Dataset")
             with gr.Row():
                 m = gr.Textbox(label = 'm')
                 n = gr.Textbox(label = 'n')
