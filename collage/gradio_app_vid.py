@@ -13,9 +13,16 @@ import sys
 sys.path.insert(0, '../')
 from procedure import *
 import shutil
+import threading
 import gradio as gr
 
+# Global variable to track if image has been generated
+image_generated = False
+
 def collage_video(ip, d, m, n, coll_vid_file_name):
+
+    global image_generated
+
     m = int(m)
     n = int(m)
 
@@ -175,7 +182,20 @@ def collage_video(ip, d, m, n, coll_vid_file_name):
     
     print('Your collaged video is ready.')
 
+    # Mark that image has been generated and start monitoring for close prompt
+    image_generated = True
+    threading.Thread(target=monitor_close_prompt, daemon=True).start()
+
     return op
+
+
+def monitor_close_prompt():
+    """Monitor for user input to close server"""
+    print("\nPress 'y' to close the server: ", end='', flush=True)
+    user_input = input().strip().lower()
+    if user_input == 'y':
+        print("Closing server...")
+        os._exit(0)
 
 
 with gr.Blocks() as demo:
