@@ -10,7 +10,7 @@ import argparse
 import pickle
 from PIL import Image
 import gradio as gr
-
+import threading
 import sys
 sys.path.insert(0, '../')
 from procedure import *
@@ -33,7 +33,11 @@ from procedure import *
 # m = int(argparser.m)
 # n = int(argparser.n)
 
+# Global variable to track if image has been generated
+image_generated = False
+
 def collage_image(ip, d, m, n, op):
+    global image_generated
     '''Loading the datasets'''
 
     m = int(m) # Convert to int as gradio takes in string
@@ -95,7 +99,20 @@ def collage_image(ip, d, m, n, op):
     pil_image = Image.fromarray(final_img)
     pil_image.save(op)
 
+    # Mark that image has been generated and start monitoring for close prompt
+    image_generated = True
+    threading.Thread(target=monitor_close_prompt, daemon=True).start()
+
     return final_img
+
+def monitor_close_prompt():
+    """Monitor for user input to close server"""
+    print("\nPress 'y' to close the server: ", end='', flush=True)
+    user_input = input().strip().lower()
+    if user_input == 'y':
+        print("Closing server...")
+        os._exit(0)
+
 
 
 with gr.Blocks() as demo:
@@ -114,4 +131,6 @@ with gr.Blocks() as demo:
 
     generate_btn.click(fn = collage_image, inputs = [ip, d, m, n, op], outputs = output)
 
+    
 demo.launch()
+
