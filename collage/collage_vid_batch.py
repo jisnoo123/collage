@@ -8,230 +8,189 @@ import numpy as np
 from tqdm import tqdm
 import argparse
 import pickle
-from multiprocessing import Pool, cpu_count
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-import time
-
+import ffmpeg
 import sys
+from multiprocessing import Pool, cpu_count
+import functools
 sys.path.insert(0, '../')
 from procedure import *
+import shutil
+
+# Global variables for multiprocessing
+dataset_global = None
+rb_av_global = None
+m_global = None
+n_global = None
+
+def init_worker(dataset, rb_av, m, n):
+    """Initialize worker processes with shared data"""
+    global dataset_global, rb_av_global, m_global, n_global
+    dataset_global = dataset
+    rb_av_global = rb_av
+    m_global = m
+    n_global = n
+
+def process_frame_batch(frame_data):
+    """Process a single frame - used by multiprocessing"""
+    i, frame = frame_data
+    blur_frame = blur(frame, 151)
+    final_frame = core_vid(blur_frame, m_global, n_global, dataset_global, rb_av_global)
+    return i, final_frame
+
+def process_frames_vectorized(frames, m, n, dataset, rb_av, batch_size=8, num_workers=None):
+    """Process frames in batches using multiprocessing"""
+    if num_workers is None:
+        num_workers = min(cpu_count(), 8)  # Don't use too many cores
+    
+    FOLDER_NAME = "../op/videos/checkpoint"
+    try:
+        os.makedirs(FOLDER_NAME)
+    except:
+        pass
+    
+    # Prepare frame data for multiprocessing
+    frame_data = [(i, frame) for i, frame in enumerate(frames)]
+    
+    # Use multiprocessing to process frames in parallel
+    with Pool(processes=num_workers, 
+              initializer=init_worker, 
+              initargs=(dataset, rb_av, m, n)) as pool:
+        
+        # Process frames with progress bar
+        results = []
+        for result in tqdm(pool.imap(process_frame_batch, frame_data), 
+                          total=len(frame_data), 
+                          desc="Processing frames"):
+            results.append(result)
+    
+    # Save processed frames
+    for i, final_frame in results:
+        cv2.imwrite(f"{FOLDER_NAME}/{i}_frame.png", final_frame)
+
 
 parser = argparse.ArgumentParser()
-
-parser.add_argument("--ip", help="Enter the big image input path", required=True)
+parser.add_argument("--ip", help="Enter the video input path", required=True)
+parser.add_argument("--op", help="Enter the collaged video output path", required=True)
 parser.add_argument("--m", help="Enter the m of grid", required=True)
 parser.add_argument("--n", help="Enter the n of grid", required=True)
-parser.add_argument("--d", help="Enter c for cifar10, m for mist and s for svhn", 
-                                                                    required=True)
-parser.add_argument("--workers", help="Number of worker processes (default: CPU count)", 
-                    type=int, default=cpu_count())
-parser.add_argument("--batch_size", help="Batch size for processing (default: 4)", 
-                    type=int, default=4)
+parser.add_argument("--d", help="Enter c for cifar10, m for mist and s for svhn", required=True)
 
 argparser = parser.parse_args()
 
 dataset_choice = argparser.d
 ip = argparser.ip
+op = argparser.op
 m = int(argparser.m)
 n = int(argparser.n)
-workers = argparser.workers
-batch_size = argparser.batch_size
-
-print(f"Using {workers} workers with batch size {batch_size}")
 
 '''Loading the datasets'''
 
 if dataset_choice == 'c':
-    # Load the CIFAR10 dataset
-    with open('cifar10', 'rb') as f:
+    with open('../dataset/actual/cifar10', 'rb') as f:
         dataset = pickle.load(f)
-    # Load the cifar10 dataset by unpickling the pickled data
-    with open('cifar10_rb_av', 'rb') as f:
-        rb_av = pickle.load(f)
-elif dataset_choice == 'm':
-    # Load the MNIST dataset
-    with open('cifar10', 'rb') as f:
-        dataset = pickle.load(f)
-    # Load the mnist dataset by unpickling the pickled data
-    with open('mnist_rb_av', 'rb') as f:
+    with open('../dataset/rb_av/cifar10_rb_av', 'rb') as f:
         rb_av = pickle.load(f)
 elif dataset_choice == 's':
-    # Load the SVHN dataset
-    with open('svhn_rb', 'rb') as f:
+    with open('../dataset/actual/svhn', 'rb') as f:
         dataset = pickle.load(f)
-    # Load the svhn dataset by unpickling the pickled data
-    with open('svhn_rb_av', 'rb') as f:
+    with open('../dataset/rb_av/svhn_rb_av', 'rb') as f:
+        rb_av = pickle.load(f)
+elif dataset_choice == 'i':
+    with open('../dataset/actual/imnet10', 'rb') as f:
+        dataset = pickle.load(f)
+    with open('../dataset/rb_av/imnet10_rb_av', 'rb') as f:
+        rb_av = pickle.load(f)
+elif dataset_choice == 'a':
+    with open('../dataset/actual/anime', 'rb') as f:
+        dataset = pickle.load(f)
+    with open('../dataset/rb_av/anime_rb_av', 'rb') as f:
         rb_av = pickle.load(f)
 
 ''' Loading the input video '''
 
 cap = cv2.VideoCapture(ip)
 
-# Check if the video was opened successfully
 if not cap.isOpened():
     print("Could not open video file.")
+    sys.exit()
 else:
     print("Video file opened successfully!")
 
-cap = cv2.VideoCapture(ip)
+print('Your video is under process. This may take some time.')
 
-ret, frame = cap.read() # Read the first frame
 
-height, width = frame.shape[0], frame.shape[1]
+# Extracting sound
 
-'''Extracting the frames and keeping them in a list'''
-
-print("Extracting frames...")
-vid_frames = list()
-
-while ret:
-    vid_frames.append(frame.copy())  # Use copy() to avoid memory issues
-    ret, frame = cap.read() #Read the next frame
-
-cap.release()  # Release video capture early
-
-print(f"Extracted {len(vid_frames)} frames")
-
-'''Converting frames to dataset patches'''
-
-fps = 34
-output_file = '../op/output_changed.mp4'
-# Create a VideoWriter object to save the video
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Specify the codec for the output video file
-
-# Creating a folder to dump the converted images
-FOLDER_NAME = "checkpoint"
+vid_input_file = ffmpeg.input(ip)
+FOLDER_SOUND = "../ip/sounds"
 
 try:
-    os.makedirs(FOLDER_NAME)
+    os.makedirs(FOLDER_SOUND)
 except:
     pass
 
-# Optimized function to process multiple frames in a batch
-def process_frame_batch(batch_args):
-    batch_indices, batch_frames, m, n, dataset, rb_av, folder_name = batch_args
-    results = []
-    
-    for i, frame in zip(batch_indices, batch_frames):
-        try:
-            blur_frame = blur(frame, 151) #Applying a kernel size of 151
-            final_frame = core(blur_frame, m, n, dataset, rb_av)
-            
-            # Save with higher compression for faster I/O
-            cv2.imwrite(folder_name + '/' + str(i) + '_frame.png', final_frame, 
-                       [cv2.IMWRITE_PNG_COMPRESSION, 1])  # Fast compression
-            results.append(i)
-        except Exception as e:
-            print(f"Error processing frame {i}: {e}")
-            results.append(None)
-    
-    return results
+sound_path = '../ip/sounds/sound.mp3'
+vid_input_file.output(sound_path, acodec='mp3').run(overwrite_output=True, quiet=True)
 
-# Function to process a single frame (fallback)
-def process_frame(args):
-    i, frame, m, n, dataset, rb_av, folder_name = args
-    
-    try:
-        blur_frame = blur(frame, 151) #Applying a kernel size of 151
-        final_frame = core(blur_frame, m, n, dataset, rb_av)
-        cv2.imwrite(folder_name + '/' + str(i) + '_frame.png', final_frame,
-                   [cv2.IMWRITE_PNG_COMPRESSION, 1])  # Fast compression
-        return i
-    except Exception as e:
-        print(f"Error processing frame {i}: {e}")
-        return None
+ret, frame = cap.read()
+height, width = frame.shape[0], frame.shape[1]
 
-# Create batches for processing
-def create_batches(vid_frames, batch_size):
-    batches = []
-    for i in range(0, len(vid_frames), batch_size):
-        batch_indices = list(range(i, min(i + batch_size, len(vid_frames))))
-        batch_frames = [vid_frames[j] for j in batch_indices]
-        batches.append((batch_indices, batch_frames, m, n, dataset, rb_av, FOLDER_NAME))
-    return batches
+# Extracting the frames of the video
 
-# Process frames in parallel with batching
-print(f"Processing {len(vid_frames)} frames in parallel with batching...")
-start_time = time.time()
+vid_frames = list()
+while ret:
+    vid_frames.append(frame)
+    ret, frame = cap.read()
 
-if batch_size > 1:
-    # Use batched processing for better efficiency
-    batches = create_batches(vid_frames, batch_size)
-    
-    with ProcessPoolExecutor(max_workers=workers) as executor:
-        # Submit all batches
-        future_to_batch = {executor.submit(process_frame_batch, batch): batch for batch in batches}
-        
-        completed_frames = 0
-        total_frames = len(vid_frames)
-        
-        with tqdm(total=total_frames, desc="Processing frames", unit="frame") as pbar:
-            for future in as_completed(future_to_batch):
-                try:
-                    results = future.result()
-                    completed_frames += len([r for r in results if r is not None])
-                    pbar.update(len(results))
-                except Exception as e:
-                    print(f"Batch processing error: {e}")
+# Calculating FPS of the video
+
+video_fps = cv2.VideoCapture(ip)
+(major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
+if int(major_ver) < 3:
+    fps = video_fps.get(cv2.cv.CV_CAP_PROP_FPS)
 else:
-    # Use single frame processing
-    frame_args = [(i, vid_frames[i], m, n, dataset, rb_av, FOLDER_NAME) for i in range(len(vid_frames))]
-    
-    with ProcessPoolExecutor(max_workers=workers) as executor:
-        list(tqdm(executor.map(process_frame, frame_args), 
-                  total=len(vid_frames),
-                  desc="Processing frames",
-                  unit="frame"))
+    fps = video_fps.get(cv2.CAP_PROP_FPS)
+video_fps.release()
 
-processing_time = time.time() - start_time
-print(f"Frame processing completed in {processing_time:.2f} seconds")
+# Use batch processing 
+process_frames_vectorized(vid_frames, m, n, dataset, rb_av)
 
-# Optimized video writing with threading
-print("Creating output video...")
-video = cv2.VideoWriter(output_file, fourcc, fps, (width, height))
 
-def load_frame(i):
-    return i, cv2.imread('./'+ FOLDER_NAME + '/' + str(i) + '_frame.png')
+print('Standby.... Your video is about to be ready')
 
-# Use threading for I/O operations (reading processed frames)
-start_time = time.time()
-frames_dict = {}
+'''Make the no sound video by merging the dumped'''
 
-with ThreadPoolExecutor(max_workers=min(8, len(vid_frames))) as executor:
-    # Submit all frame loading tasks
-    future_to_index = {executor.submit(load_frame, i): i for i in range(len(vid_frames))}
-    
-    with tqdm(total=len(vid_frames), desc="Loading frames", unit="frame") as pbar:
-        for future in as_completed(future_to_index):
-            try:
-                index, loaded_frame = future.result()
-                frames_dict[index] = loaded_frame
-                pbar.update(1)
-            except Exception as e:
-                print(f"Error loading frame: {e}")
+FOLDER_NAME_no_sound = "../op/no_sound_patched_video"
 
-# Write frames in order
-print("Writing video file...")
-for i in tqdm(range(len(vid_frames)), desc="Writing video", unit="frame"):
-    if i in frames_dict and frames_dict[i] is not None:
-        video.write(frames_dict[i])
-    else:
-        print(f"Warning: Frame {i} is missing or corrupted")
+try:
+    os.makedirs(FOLDER_NAME_no_sound)
+except:
+    pass
 
-video_time = time.time() - start_time
-print(f"Video creation completed in {video_time:.2f} seconds")
+no_sound_patched_vid_path = '../op/no_sound_patched_video/no_sound_vid.mp4'
 
-total_time = processing_time + video_time
-print(f"Total processing time: {total_time:.2f} seconds")
-print(f"Average speed: {len(vid_frames)/total_time:.2f} frames/second")
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+video = cv2.VideoWriter(no_sound_patched_vid_path, fourcc, fps, (width, height))
 
-# Release the video writer and close the video file
+FOLDER_NAME = "../op/videos/checkpoint"
+
+for i in range(len(vid_frames)):
+    loaded_frame = cv2.imread(FOLDER_NAME + '/' + str(i) + '_frame.png')
+    video.write(loaded_frame)
+
 video.release()
 cv2.destroyAllWindows()
 
-# Optional: Clean up processed frames to save disk space
-cleanup = input("Do you want to delete processed frame files? (y/n): ")
-if cleanup.lower() == 'y':
-    import shutil
-    shutil.rmtree(FOLDER_NAME)
-    print("Processed frames cleaned up.")
+shutil.rmtree(FOLDER_NAME)
+
+
+'''Merge the no sound video with the sound '''
+
+input_video = ffmpeg.input(no_sound_patched_vid_path)
+input_audio = ffmpeg.input(sound_path)
+ffmpeg.concat(input_video, input_audio, v=1, a=1).output(op).run(overwrite_output=True, quiet=True)
+
+shutil.rmtree(FOLDER_NAME_no_sound)
+shutil.rmtree(FOLDER_SOUND)
+
+print('Your collaged video is ready.')

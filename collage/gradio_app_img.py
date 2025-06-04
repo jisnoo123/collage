@@ -15,23 +15,6 @@ import sys
 sys.path.insert(0, '../')
 from procedure import *
 
-# parser = argparse.ArgumentParser()
-
-# parser.add_argument("--ip", help="Enter the big image input path", required=True)
-# parser.add_argument("--op", help="Enter the collaged image output path", required=True)
-# parser.add_argument("--m", help="Enter the m of grid", required=True)
-# parser.add_argument("--n", help="Enter the n of grid", required=True)
-# parser.add_argument("--d", help="Enter c for cifar10, m for mist and s for svhn", 
-#                                                                     required=True)
-
-
-# argparser = parser.parse_args()
-
-# dataset_choice = argparser.d
-# ip = argparser.ip
-# op = argparser.op
-# m = int(argparser.m)
-# n = int(argparser.n)
 
 # Global variable to track if image has been generated
 image_generated = False
