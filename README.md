@@ -1,4 +1,4 @@
-# collage
+# Collager
 
 Turn your images and videos into a dataset collage. Look at it from a distance, you would see the original shadow (I don't think if I should call it that) of your image or video, replaced with the dataset images.
 
