@@ -47,13 +47,13 @@ ImageNet video with 900 Grids
 
 ### Download the datasets
 
-In dataset, run the download_data_grdive.py
+In dataset, run the **download_data_grdive.py**
 
 `python3 download_data_gdrive.py`
 
 ### UI for images
 
-In collage, run gradio_app_img.py
+In collage, run **gradio_app_img.py**
 
 `python3 gradio_app_img.py`
 
@@ -63,14 +63,26 @@ Copy the local server link and paste it in your browser to work in the interface
 
 ### UI for videos
 
-In collage, run gradio_app_vid_batch.py for faster execution that processes video frames in batches, otherwise you can go with gradio_app_vid.py that will take months to process a 1 minute video.
+In collage, run **gradio_app_img.py**
 
-For faster execution:
-`python3 gradio_app_vid_batch.py`
+`python3 gradio_app_img.py`
 
-For sloth execution:
-`python3 gradio_app_vid.py`
 
 Copy the local server link and paste it in your browser to work in the interface
 
 ![Video_UI](sample/UI/video.png)
+
+### For Pro users only
+
+### Images
+
+Edit the **start_collage_img.bash** according to your needs. Then run it.
+
+`bash start_collage_img.bash`
+
+### Videos
+
+Edit the **start_collage_vid.bash** according to your needs. Then run it.
+
+`bash start_collage_vid_batch.bash`
+
