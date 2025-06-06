@@ -11,4 +11,10 @@ Turn your images and videos into dataset shadows.
 
 ## Samples
 
+Original Picture
+
 ![Sample image](sample/sample_pic.jpg)
+
+Anime with 100 grids
+
+![Anime](sample/images/girl_anime.png)
