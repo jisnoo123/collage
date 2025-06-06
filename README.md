@@ -26,3 +26,7 @@ ImageNet10 with 100 grids
 SVHN with 100 grids
 
 ![SVHN](sample/images/girl_svhn.png)
+
+CIFAR_10 with 100 grids
+
+![CIFAR_10](sample/images/girl_cifar.png)
