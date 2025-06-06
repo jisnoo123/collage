@@ -1,6 +1,10 @@
 # collage
 
-Turn your images and videos into dataset collage. Look at it from a distance, you will see the original image(kind of).
+Turn your images and videos into a dataset collage. Look at it from a distance, you would see the original shadow (I don't think if I should call it that) of your image or video, replaced with the dataset images.
+
+# What's in here?
+
+A Gradio UI that makes you collages of your images or videos. I do not recommend the video part of it, its pretty boring, however, I do recommend to try it on your portraits. Its cool on images! The more the number of grids the better it is. Go through the samples, you will understand what I am talking about. 
 
 # Datasets 
 
@@ -17,7 +21,7 @@ Original Picture
 
 ![Sample image](sample/sample_pic.jpg)
 
-Anime with 10000 grids. Zoom into the picture to see the Anime dataset images.
+Anime with 10000 grids. Zoom into the picture to see the Anime dataset images that replaced your image grids.
 
 ![Anime](sample/images/girl_anime.png)
 
@@ -97,3 +101,6 @@ Edit the **start_collage_vid.bash** according to your requirements. Then run it.
 Wondering why the **gradio_app_vid.py** and **start_collage_vid.bash** is there for?
 It doesn't process your videos in batches so your 10s video will take 10 days to be ready. I kept it there because I implemented it first. 
 
+# Conclusion
+
+This is pretty much it. The idea of this project was given by my brother, which he told me to extend it into an open source software. Thank you.
