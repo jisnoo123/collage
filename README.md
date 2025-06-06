@@ -49,9 +49,9 @@ ImageNet video with 900 Grids.
 
 From working directory, run `pip install -r requirements.txt`
 
-## Download the datasets
+## Creation of processed datasets
 
-In the dataset folder, run the **create_datasets.py**
+In the dataset folder, run **create_datasets.py**
 
 `python3 create_datasets.py`
 
