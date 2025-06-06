@@ -86,3 +86,8 @@ Edit the **start_collage_vid.bash** according to your needs. Then run it.
 
 `bash start_collage_vid_batch.bash`
 
+### Remarks
+
+Wondering why the **gradio_app_vid.py** and **start_collage_vid.bash** is there for?
+It doesn't process your videos in batches so your 10s video will take 10 days to be ready.
+
