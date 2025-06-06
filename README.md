@@ -11,4 +11,4 @@ Turn your images and videos into dataset shadows.
 
 ## Samples
 
-![alt text](../sample/sample_pic.jpg)
+![Sample image](sample/sample_pic.jpg)
