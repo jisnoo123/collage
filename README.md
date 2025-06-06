@@ -22,3 +22,7 @@ Anime with 100 grids
 ImageNet10 with 100 grids
 
 ![ImageNet10](sample/images/girl_imnet.png)
+
+SVHN with 100 grids
+
+![SVHN](sample/images/girl_svhn.png)
