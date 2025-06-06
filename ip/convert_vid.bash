@@ -1,1 +1,0 @@
-ffmpeg -i sample_vid.mp4 -c:v libx264 -c:a aac sample_vid_converted.mp4
