@@ -20,25 +20,25 @@ sys.path.insert(1, '../procedure')
 from manipulation import *
 
 
-bashCommand = "chmod u+rx download_dataset.bash"
-process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-output, error = process.communicate()
+# bashCommand = "chmod u+rx download_dataset.bash"
+# process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+# output, error = process.communicate()
 
-subprocess.call("./download_dataset.bash")
+# subprocess.call("./download_dataset.bash")
 
-print('Downloading anime dataset and imagenet is done')
-
-
-print('Extracting the zip files')
-
-with zipfile.ZipFile('./anime.zip', 'r') as zip_ref:
-    zip_ref.extractall('./')
+# print('Downloading anime dataset and imagenet is done')
 
 
-with zipfile.ZipFile('./imagenet10.zip', 'r') as zip_ref:
-    zip_ref.extractall('./')
+# print('Extracting the zip files')
 
-print('Extracting done')
+# with zipfile.ZipFile('./anime.zip', 'r') as zip_ref:
+#     zip_ref.extractall('./')
+
+
+# with zipfile.ZipFile('./imagenet10.zip', 'r') as zip_ref:
+#     zip_ref.extractall('./')
+
+# print('Extracting done')
 
 
 #------------ Downloading external datasets done -------------- #
@@ -105,7 +105,7 @@ with open('svhn', 'rb') as f:
 
 rb_av = list()
 
-print('Processing cifar 10')
+print('Processing SVHN')
 
 for i in tqdm(range(len(dataset))):
     img = dataset[i]
