@@ -18,3 +18,7 @@ Original Picture
 Anime with 100 grids
 
 ![Anime](sample/images/girl_anime.png)
+
+ImageNet10 with 100 grids
+
+![ImageNet10](sample/images/girl_imnet.png)
