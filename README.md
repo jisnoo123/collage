@@ -49,7 +49,7 @@ ImageNet video with 900 Grids
 
 In dataset, run the download_data_grdive.py
 
-`code` python3 download_data_gdrive.py
+`python3 download_data_gdrive.py`
 
 ### UI for images
 
