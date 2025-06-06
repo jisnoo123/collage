@@ -33,12 +33,23 @@ CIFAR_10 with 10000 grids
 
 ![CIFAR_10](sample/images/girl_cifar.png)
 
-## Video 
+## Video
 
 Original Video
 
-![bleach](sample/videos/video_bleach.gif)
+![Bleach](sample/videos/video_bleach.gif)
 
-ImageNet10 with 900 grids
+ImageNet video with 900 Grids
 
-![bleach_imnet10](sample/videos/bleach_converted_imnet.mp4)
+![ImageNet10](sample/videos/bleach_imnet10.gif)
+
+## Usage
+
+### Download the datasets
+
+In dataset, run the download_data_grdive.py
+
+`code` python3 download_data_gdrive.py
+
+### UI for images
+
