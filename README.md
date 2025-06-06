@@ -11,6 +11,8 @@ Turn your images and videos into dataset shadows.
 
 ## Samples
 
+## Image
+
 Original Picture
 
 ![Sample image](sample/sample_pic.jpg)
@@ -30,3 +32,9 @@ SVHN with 100 grids
 CIFAR_10 with 100 grids
 
 ![CIFAR_10](sample/images/girl_cifar.png)
+
+# Video 
+
+Original Video
+
+![bleach](sample/videos/video_bleach.gif)
