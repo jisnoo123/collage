@@ -116,7 +116,7 @@ with gr.Blocks() as demo:
 
     generate_btn = gr.Button('Generate')
 
-    output = gr.Image(label='Collaged image', height=400, width=400)
+    output = gr.Image(label='Collaged image', height=400, width=600)
 
     generate_btn.click(fn = collage_image, inputs = [ip, d, m, n, coll_img_file_name], outputs = output)
 

@@ -53,3 +53,11 @@ In dataset, run the download_data_grdive.py
 
 ### UI for images
 
+In collage, run gradio_app_img.py
+
+`python3 gradio_app_img.py`
+
+Copy the local server link and paste it in your browser to work in the interface
+
+![Image_UI](sample/UI/image.png)
+
