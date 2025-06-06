@@ -61,3 +61,16 @@ Copy the local server link and paste it in your browser to work in the interface
 
 ![Image_UI](sample/UI/image.png)
 
+### UI for videos
+
+In collage, run gradio_app_vid_batch.py for faster execution that processes video frames in batches, otherwise you can go with gradio_app_vid.py that will take months to process a 1 minute video.
+
+For faster execution:
+`python3 gradio_app_vid_batch.py`
+
+For sloth execution:
+`python3 gradio_app_vid.py`
+
+Copy the local server link and paste it in your browser to work in the interface
+
+![Video_UI](sample/UI/video.png)
