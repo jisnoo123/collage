@@ -1,1 +1,0 @@
-cp  cifar10 mnist svhn ../collage_image
