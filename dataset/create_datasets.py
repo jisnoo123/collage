@@ -49,7 +49,7 @@ print('Extracting done')
 print('Processing CIFAR 10 to make the final dataset')
 
 train_dataset = torchvision.datasets.CIFAR10(root='CIFAR10', train=True, download=True)
-test_dataset = torchvision.datasets.CIFAR10(root='CIIFAR10', train=False, download=True)
+test_dataset = torchvision.datasets.CIFAR10(root='CIFAR10', train=False, download=True)
 train_images = [np.array(train_dataset[i][0]) for i in range(len(train_dataset))]
 test_images = [np.array(test_dataset[i][0]) for i in range(len(test_dataset))]
 full_dataset = train_images + test_images
