@@ -1,0 +1,1 @@
+Extract the anime.zip and imagenet10.zip before running create_datasets.py
