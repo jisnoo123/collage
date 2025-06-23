@@ -1,3 +1,5 @@
+<a href="https://huggingface.co/spaces/jisnoo/collage_img"><img src="badge_readme/open-in-hf-spaces-lg-dark.svg" alt="Open Demo in Hugging Face Spaces"/></a>
+
 # Collager
 
 Turn your images and videos into a dataset collage. Look at it from a distance, you would see the original shadow (I don't think if I should call it that) of your image or video, replaced with the dataset images.
