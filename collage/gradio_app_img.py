@@ -73,7 +73,7 @@ def collage_image(ip, d, m, n, coll_img_file_name):
 
     # print('Performing core execution')
 
-    blr_big_img = blur(img, 151) #Applying a kernel size of 151
+    blr_big_img = blur(img, 1) #Applying a kernel size of 1
     final_img = core_img(blr_big_img, m, n, dataset, rb_av)
 
     # print('Core execution completed')

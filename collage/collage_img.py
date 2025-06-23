@@ -76,7 +76,7 @@ img = cv2.cvtColor(img_big, cv2.COLOR_BGR2RGB)
 
 print('Performing core execution')
 
-blr_big_img = blur(img, 151) #Applying a kernel size of 151
+blr_big_img = blur(img, 1) #Applying a kernel size of 1
 final_img = core_img(blr_big_img, m, n, dataset, rb_av)
 
 print('Core execution completed')

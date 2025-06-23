@@ -37,7 +37,7 @@ def init_worker(dataset, rb_av, m, n):
 def process_frame_batch(frame_data):
     """Process a single frame - used by multiprocessing"""
     i, frame = frame_data
-    blur_frame = blur(frame, 151)
+    blur_frame = blur(frame, 1) # Apply a kernel size of 1
     final_frame = core_vid(blur_frame, m_global, n_global, dataset_global, rb_av_global)
     return i, final_frame
 

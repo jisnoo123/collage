@@ -132,7 +132,7 @@ def collage_video(ip, d, m, n, coll_vid_file_name):
     for i in tqdm(range(len(vid_frames))):
         frame = vid_frames[i]
 
-        blur_frame = blur(frame, 151) #Applying a kernel size of 151
+        blur_frame = blur(frame, 1) #Applying a kernel size of 1
 
         final_frame = core_vid(blur_frame, m, n, dataset, rb_av)
 
