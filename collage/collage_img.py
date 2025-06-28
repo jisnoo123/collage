@@ -87,7 +87,6 @@ plt.imshow(final_img)
 plt.show()
 
 
-
 '''Save it in the output path'''
 pil_image = Image.fromarray(final_img)
 pil_image.save(op)

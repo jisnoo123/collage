@@ -41,7 +41,7 @@ from manipulation import *
 # print('Extracting done')
 
 
-#------------ Downloading external datasets done -------------- #
+# ------------ Downloading external datasets done -------------- #
 
 
 # Creating final dataset for CIFAR 10

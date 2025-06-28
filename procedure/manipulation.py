@@ -3,8 +3,7 @@ import numpy as np
 from tqdm import tqdm
 
 def mean(img):
-    '''Vectorized version - Finds the mean of the pixels of the image of 3 channels'''
-    return np.mean(img)
+    return tuple(np.mean(np.array(img).reshape(-1, 3), axis=0))
 
 def resize(img, new_ht, new_wt):
     # Resize an image to new_ht and new_wt
@@ -17,11 +16,7 @@ def blur(img, kernel_size):
     return blurred_img
 
 def linear_search(mean_big_patch, avg_px):
-    '''Returns the index of the image in the dataset having nearest pixel intensity
-       to the patch'''
-    
-    distances = np.abs(np.array(avg_px) - mean_big_patch)
-    return np.argmin(distances)
+    return np.argmin(np.sum(np.abs(np.array(avg_px) - mean_big_patch), axis=1))
 
 def core_img(big_img, m, n, fds, rb_av):
     '''
