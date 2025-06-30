@@ -198,7 +198,7 @@ def monitor_close_prompt():
         os._exit(0)
 
 
-with gr.Blocks() as demo:
+with gr.Blocks(ss=".gradio-container {background-color: #0E79B2;}") as demo:
     with gr.Row(equal_height = True):
         ip = gr.Video(label = 'input video',  height=400, width = 300)
         with gr.Column():

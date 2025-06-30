@@ -3,3 +3,13 @@ opencv-python
 torch
 torchvision
 scipy
+matplotlib
+ffmpeg-python
+shutil
+pickle
+threading
+os
+multiprocessing
+pillow
+argparse
+tqdm
