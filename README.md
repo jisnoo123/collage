@@ -2,7 +2,7 @@
 
 # Collager
 
-Turning images and videos to dataset collages. A Gradio UI that makes you collages of your images or videos. 
+Collager turns your images and videos to dataset collages, with a Gradio UI. 
 
 # Datasets 
 
@@ -78,3 +78,6 @@ In collage, run **gradio_app_img.py**
 
 Copy the local server link and paste it in your browser to work in the interface
 
+# Conclusion 
+
+This is my first open source project. I thank my brother <a href = "https://jimut123.github.io/">Jimut</a> for giving me the idea of this project and <a href = "https://cs.rkmvu.ac.in/~sp/">Sw. Punyeshwarananda</a>, HOD, Dept. of Computer Science, RKMVERI for providing suggestions for improvements. 
