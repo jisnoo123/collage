@@ -2,7 +2,8 @@
 
 # Collager
 
-Collager turns your images and videos to dataset collages, with a Gradio UI. 
+Collager turns your images and videos to dataset collages, with a Gradio UI.
+The original image is broken into patches and is replace with nearest neighbouring dataset image with respect to the mean pixel value of the three channels. 
 
 # Datasets 
 
@@ -15,7 +16,7 @@ Collager turns your images and videos to dataset collages, with a Gradio UI.
 
 ## Image
 
-Original Picture
+Original Picture of RKMVERI
 
 ![Sample image](sample/images/rkmveri_golden.jpg)
 
