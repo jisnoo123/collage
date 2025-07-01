@@ -3,7 +3,7 @@
 # Collager
 
 Collager turns your images and videos to dataset collages, with a Gradio UI.
-The original image is broken into patches and is replace with nearest neighbouring dataset image with respect to the mean pixel value of the three channels. 
+The original image is broken into patches and is replace with nearest neighbouring dataset image with respect to the mean pixel value of the three channels. When lookead the result from a distance, one could see the original image (kind of) but replaced with dataset images.
 
 # Datasets 
 
